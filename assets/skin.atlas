@@ -1,0 +1,44 @@
+
+skin.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beige
+  rotate: false
+  xy: 28, 10
+  size: 27, 34
+  split: 9, 10, 17, 15
+  orig: 27, 34
+  offset: 0, 0
+  index: -1
+brown
+  rotate: false
+  xy: 1, 6
+  size: 26, 38
+  split: 10, 10, 17, 19
+  orig: 26, 38
+  offset: 0, 0
+  index: -1
+chicken
+  rotate: false
+  xy: 66, 36
+  size: 41, 73
+  orig: 75, 75
+  offset: 16, 0
+  index: -1
+grass
+  rotate: false
+  xy: 1, 45
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+gray
+  rotate: false
+  xy: 56, 1
+  size: 27, 34
+  split: 9, 10, 17, 15
+  orig: 27, 34
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,43 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+  }
+  dependencies {
+    classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+  }
+}
+
+subprojects {
+  apply plugin: 'kotlin'
+  sourceCompatibility = 1.8
+
+  kotlin {
+    experimental {
+      coroutines 'enable'
+    }
+  }
+}
+
+subprojects {
+  version = '0.1'
+  ext.appName = 'bialjam17'
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+  }
+}
+
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+task pack << {
+  TexturePacker.process(
+    'atlas', // Raw assets path.
+    'assets', // Output directory.
+    'skin' // Name of the generated atlas (without extension).
+  )
+}

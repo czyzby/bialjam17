@@ -1,0 +1,22 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+dependencies {
+  compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+  compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+  compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+  compile "com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion"
+  compile "io.github.libktx:ktx-log:$ktxLogVersion"
+  compile "io.github.libktx:ktx-scene2d:$ktxScene2DVersion"
+  compile "io.github.libktx:ktx-async:$ktxAsyncVersion"
+  compile "io.github.libktx:ktx-box2d:$ktxBox2dVersion"
+  compile "io.github.libktx:ktx-inject:$ktxInjectVersion"
+  compile "io.github.libktx:ktx-app:$ktxAppVersion"
+  compile "io.github.libktx:ktx-math:$ktxMathVersion"
+  compile "io.github.libktx:ktx-assets:$ktxAssetsVersion"
+  compile "io.github.libktx:ktx-i18n:$ktxI18nVersion"
+  compile "io.github.libktx:ktx-actors:$ktxActorsVersion"
+  compile "io.github.libktx:ktx-collections:$ktxCollectionsVersion"
+  compile "io.github.libktx:ktx-style:$ktxStyleVersion"
+}
