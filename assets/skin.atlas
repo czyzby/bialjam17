@@ -1,12 +1,12 @@
 
 skin.png
-size: 128,128
+size: 1024,128
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 beige
   rotate: false
-  xy: 28, 10
+  xy: 689, 87
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -14,7 +14,7 @@ beige
   index: -1
 brown
   rotate: false
-  xy: 1, 6
+  xy: 62, 18
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
@@ -22,23 +22,121 @@ brown
   index: -1
 chicken
   rotate: false
-  xy: 66, 36
-  size: 41, 73
-  orig: 75, 75
-  offset: 16, 0
+  xy: 651, 72
+  size: 37, 49
+  orig: 50, 50
+  offset: 7, 0
+  index: -1
+dirt
+  rotate: false
+  xy: 1, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 1, 45
+  xy: 66, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_e
+  rotate: false
+  xy: 131, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_n
+  rotate: false
+  xy: 196, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_ne
+  rotate: false
+  xy: 261, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_nw
+  rotate: false
+  xy: 326, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_s
+  rotate: false
+  xy: 391, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_se
+  rotate: false
+  xy: 456, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_sw
+  rotate: false
+  xy: 521, 57
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+grass_w
+  rotate: false
+  xy: 586, 57
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 gray
   rotate: false
-  xy: 56, 1
+  xy: 89, 22
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
   offset: 0, 0
+  index: -1
+tower0
+  rotate: false
+  xy: 1, 1
+  size: 60, 55
+  orig: 60, 60
+  offset: 0, 4
+  index: -1
+tower1
+  rotate: false
+  xy: 1, 1
+  size: 60, 55
+  orig: 60, 60
+  offset: 0, 4
+  index: -1
+tower2
+  rotate: false
+  xy: 1, 1
+  size: 60, 55
+  orig: 60, 60
+  offset: 0, 4
+  index: -1
+tower3
+  rotate: false
+  xy: 1, 1
+  size: 60, 55
+  orig: 60, 60
+  offset: 0, 4
+  index: -1
+tower4
+  rotate: false
+  xy: 1, 1
+  size: 60, 55
+  orig: 60, 60
+  offset: 0, 4
   index: -1
