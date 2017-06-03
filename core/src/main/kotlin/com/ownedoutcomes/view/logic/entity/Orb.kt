@@ -49,7 +49,7 @@ class Orb(
         then Actions.delay(lifetime - 2f)
         then Actions.scaleTo(0f, 0f, 1f, Interpolation.bounceIn))
     body.ropeJointWith(player.body) {
-      maxLength = 4f
+      maxLength = 5f
     }
   }
 

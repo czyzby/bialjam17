@@ -13,25 +13,23 @@ import kotlinx.coroutines.experimental.delay
 import ktx.actors.then
 import ktx.scene2d.Scene2DSkin
 
-class FireballExplosion(
+class HealExplosion(
     override val body: Body,
     override val position: Vector2) : Entity {
   override var destination: Vector2? = null
   override val entityType: EntityType = PARTICLE
   override var dead = false
   val skin = Scene2DSkin.defaultSkin
-  val image: Image = Image(skin, "explosion").apply {
-    setSize(10f, 10f)
+  val image: Image = Image(skin, "spell2").apply {
+    setSize(2.5f, 2.5f)
     setOrigin(width / 2f, height / 2f)
+    position.y += 1f
     setPosition(position.x - width / 2f, position.y - width / 2f)
     setScale(0f)
-    addAction(Actions.parallel(
-        Actions.scaleTo(1f, 1f, 0.4f, Interpolation.bounceOut)
-            then Actions.delay(0.1f)
-            then Actions.scaleTo(0f, 0f, 0.4f, Interpolation.bounceIn),
-        Actions.repeat(3, Actions.rotateBy(30f, 0.15f, Interpolation.fade)
-            then Actions.rotateBy(-30f, 0.15f, Interpolation.fade))
-    ) then Actions.run { dead = true })
+    addAction(Actions.scaleTo(1f, 1f, 0.4f, Interpolation.bounceOut)
+        then Actions.delay(0.8f)
+        then Actions.scaleTo(0f, 0f, 0.4f, Interpolation.bounceIn)
+        then Actions.run { dead = true })
   }
 
   override fun update(delta: Float) {

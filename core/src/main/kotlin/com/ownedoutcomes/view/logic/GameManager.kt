@@ -5,6 +5,7 @@ import box2dLight.RayHandler
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -23,18 +24,19 @@ import ktx.scene2d.Scene2DSkin
 class GameManager(
     val batch: Batch,
     val background: TextureRegion,
-    val skin: Skin = Scene2DSkin.defaultSkin) {
+    val skin: Skin = Scene2DSkin.defaultSkin,
+    healthChangeCallback: (Int) -> Unit) {
   val camera = OrthographicCamera(32f, 32f)
   val debugRenderer = Box2DDebugRenderer()
   val world = createWorld()
   val temp = vec3()
-  val player = Player(world)
+  val player = Player(world, healthChangeCallback)
   val entities = gdxArrayOf<Entity>()
   var timeToEnemySpawn = 0f
   val cameraMovementSpeed = 3.5f
   val backgroundSize = 512 / 32
   val backgroundRenderSize = 544f / 32f
-  val spawningOffset = 20f
+  val spawningOffset = 24f
   val destinationCursor = skin.atlas.createSprite("destination").apply {
     setSize(2f, 2f)
   }
@@ -45,6 +47,9 @@ class GameManager(
   val light = PointLight(lightSystem, 100, color(1f, 1f, 1f, 0.6f), 20f, 0f, 0f).apply {
     isSoft = false
     setContactFilter(lightCategory, 0, lightMask)
+  }
+  val heartSprite: Sprite = skin.atlas.createSprite("heart").apply {
+    setSize(1f, 1f)
   }
 
   init {
@@ -75,9 +80,10 @@ class GameManager(
       val enemy = Enemy(world,
           x = playerPos.x + x,
           y = playerPos.y + y,
+          heartSprite = heartSprite,
           player = player)
       entities.add(enemy)
-      timeToEnemySpawn = MathUtils.random(0.5f, 1.5f)
+      timeToEnemySpawn = MathUtils.random(2f, 3f)
     }
   }
 

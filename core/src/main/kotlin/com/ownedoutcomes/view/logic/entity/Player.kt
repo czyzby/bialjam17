@@ -8,7 +8,9 @@ import com.ownedoutcomes.view.logic.playerMask
 import ktx.box2d.body
 import ktx.box2d.filter
 
-class Player(world: World) : AbstractEntity(
+class Player(
+    world: World,
+    val healthChangeCallback: (Int) -> Unit) : AbstractEntity(
     world.body {
       linearDamping = 10f
       fixedRotation = true
@@ -21,10 +23,20 @@ class Player(world: World) : AbstractEntity(
         }
       }
     }, entityType = EntityType.PLAYER, spriteName = "witch") {
-  override val speed: Float = 16000f
+  override val speed: Float = 25000f
+  var health = 10
+    set(value) {
+      field = value
+      healthChangeCallback(value)
+    }
 
   init {
     setSpriteSize(6f, 6f)
     sprite.setOrigin(3f, 1.5f)
+  }
+
+  override fun update(delta: Float) {
+    super.update(delta)
+    // TODO check if dead
   }
 }

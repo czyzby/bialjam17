@@ -60,9 +60,6 @@ class Application : KtxGame<Screen>() {
     label("decorative") {
       font = skin.getFont("decorative")
     }
-    progressBar("default-horizontal") {
-      knobBefore = skin.getDrawable("bar")
-    }
   }
 
   override fun dispose() {

@@ -1,12 +1,10 @@
 package com.ownedoutcomes.view.logic.entity
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
-import com.ownedoutcomes.view.logic.EntityType.DESTRUCTIBLE
-import com.ownedoutcomes.view.logic.EntityType.ORB
+import com.ownedoutcomes.view.logic.EntityType.FIREBALL
 import com.ownedoutcomes.view.logic.GameManager
 import com.ownedoutcomes.view.logic.angleTo
 import com.ownedoutcomes.view.logic.entity.particle.FireballExplosion
@@ -35,7 +33,7 @@ class Fireball(
       maskBits = projectileMask
     }
   }
-}, entityType = DESTRUCTIBLE, spriteName = "spell0") {
+}, entityType = FIREBALL, spriteName = "spell0") {
   val pushback = 30000f
   val damage = 2
   var lifetime = 1f
@@ -59,14 +57,14 @@ class Fireball(
   }
 
   override fun destroy() {
-    println("Destroying...")
-    explode { enemy ->
-      println("GOT ONE")
-      val (forceX, forceY) = body.position angleTo enemy.position
-      enemy.body.applyForceToCenter(forceX * pushback, forceY * pushback, true)
-      // TODO deal damage
-    }
+    explode { damage(it) }
     gameManager.entities.add(FireballExplosion(body, Vector2(position)))
     super.destroy()
+  }
+
+  fun damage(enemy: Enemy) {
+    val (forceX, forceY) = body.position angleTo enemy.position
+    enemy.body.applyForceToCenter(forceX * pushback, forceY * pushback, true)
+    enemy.health -= damage
   }
 }

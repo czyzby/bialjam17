@@ -28,7 +28,7 @@ class ContactManager : ContactListener {
     when {
       typeA == PLAYER && typeB == ENEMY -> attackPlayer(entityA as Player, entityB as Enemy)
       typeA == ORB && typeB == ENEMY -> pushEnemy(entityA as Orb, entityB as Enemy)
-      typeA == DESTRUCTIBLE && typeB == ENEMY -> entityA.dead = true
+      typeA == FIREBALL && typeB == ENEMY -> triggerFireball(entityA as Fireball, entityB as Enemy)
     }
   }
 
@@ -38,9 +38,9 @@ class ContactManager : ContactListener {
     val angle = MathUtils.atan2(playerY - enemyY, playerX - enemyX)
     val forceX = MathUtils.cos(angle)
     val forceY = MathUtils.sin(angle)
-    val speed = player.speed / 5f
-    val enemySpeed = enemy.speed / 3f
-    // TODO damage player
+    val speed = player.speed / 3f
+    val enemySpeed = enemy.speed / 2f
+    player.health--
     enemy.hop()
     player.body.applyForceToCenter(speed * forceX, speed * forceY, true)
     enemy.body.applyForceToCenter(enemySpeed * -forceX, enemySpeed * -forceY, true)
@@ -53,8 +53,12 @@ class ContactManager : ContactListener {
     val forceX = MathUtils.cos(angle)
     val forceY = MathUtils.sin(angle)
     enemy.body.applyForceToCenter(forceX * orb.pushback, forceY * orb.pushback, true)
-//    orb.move(0.3f)
-    // TODO damage enemy
+    enemy.health--
+  }
+
+  fun triggerFireball(fireball: Fireball, enemy: Enemy) {
+    fireball.dead = true
+    fireball.damage(enemy)
   }
 
   override fun endContact(contact: Contact) {

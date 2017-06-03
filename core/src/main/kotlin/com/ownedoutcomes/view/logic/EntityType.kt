@@ -3,7 +3,7 @@ package com.ownedoutcomes.view.logic
 enum class EntityType {
   PLAYER,
   ENEMY,
-  DESTRUCTIBLE,
+  FIREBALL,
   ORB,
   PARTICLE
 }

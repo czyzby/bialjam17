@@ -4,19 +4,26 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.view.actor.SpellIcon
 import com.ownedoutcomes.view.logic.GameManager
 import ktx.actors.alpha
 import ktx.actors.onKeyDown
 import ktx.actors.setKeyboardFocus
+import ktx.actors.then
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
 import ktx.async.ktxAsync
 import ktx.collections.gdxArrayOf
+import ktx.collections.gdxListOf
 import ktx.scene2d.Scene2DSkin
+import ktx.scene2d.image
 import ktx.scene2d.progressBar
 import ktx.scene2d.table
 import ktx.style.get
@@ -26,7 +33,9 @@ class Game(
     batch: Batch
 ) : KtxScreen {
   val spells = gdxArrayOf<SpellIcon>()
-  var gameManager = GameManager(batch, Scene2DSkin.defaultSkin["background"])
+  val hearts = mutableListOf<Image>()
+  var gameManager = GameManager(batch, Scene2DSkin.defaultSkin["background"]) { updateHeartsPanel(it) }
+
   val inputProcessor = object : KtxInputAdapter {
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
       gameManager.handleClick(screenX.toFloat(), screenY.toFloat())
@@ -58,15 +67,11 @@ class Game(
 
     table {
       padBottom(15f)
-      progressBar {
-        value = 1f
-        ktxAsync {
-          while (value >= 0.5f) {
-            skipFrame()
-            value -= 0.011f
-          }
+      table {
+        repeat(10) {
+          hearts.add(image("heart").cell(width = 32f, height = 32f, pad = 2f))
         }
-      }.cell(row = true, growX = true, pad = 15f)
+      }.cell(row = true, growX = true)
       table {
         for (spellId in arrayOf('Q', 'W', 'E', 'R', 'T')) {
           val icon = SpellIcon()
@@ -90,6 +95,20 @@ class Game(
     gameManager.render()
     stage.act(delta)
     stage.draw()
+  }
+
+  fun updateHeartsPanel(health: Int) {
+    hearts.forEachIndexed { index, icon ->
+      if (index < health) {
+        if (icon.alpha < 1f) {
+          icon.clearActions()
+          icon.addAction(Actions.fadeIn(0.25f, Interpolation.fade) then Actions.alpha(1f))
+        }
+      } else if (icon.alpha > 0f) {
+        icon.clearActions()
+        icon.addAction(Actions.fadeOut(0.25f) then Actions.alpha(0f))
+      }
+    }
   }
 
   override fun hide() {
