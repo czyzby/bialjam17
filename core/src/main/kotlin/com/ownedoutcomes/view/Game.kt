@@ -9,10 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.view.actor.SpellIcon
 import com.ownedoutcomes.view.logic.GameManager
+import ktx.actors.alpha
 import ktx.actors.onKeyDown
 import ktx.actors.setKeyboardFocus
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
+import ktx.async.ktxAsync
 import ktx.collections.gdxArrayOf
 import ktx.scene2d.Scene2DSkin
 import ktx.scene2d.progressBar
@@ -21,7 +23,7 @@ import ktx.style.get
 
 class Game(
     val stage: Stage,
-    val batch: Batch
+    batch: Batch
 ) : KtxScreen {
   val spells = gdxArrayOf<SpellIcon>()
   var gameManager = GameManager(batch, Scene2DSkin.defaultSkin["background"])
@@ -33,18 +35,19 @@ class Game(
   }
   val inputListener = Actor().apply {
     onKeyDown { _, _, keyCode ->
-      val spell = when (keyCode) {
+      when (keyCode) {
         Keys.Q -> spells[0]
         Keys.W -> spells[1]
         Keys.E -> spells[2]
         Keys.R -> spells[3]
+        Keys.T -> spells[4]
         else -> null
-      }
-      spell?.let {
+      }?.let {
+        val spell = it.currentSpell
         if (it.useSpell()) {
           val x = Gdx.input.x.toFloat()
           val y = Gdx.input.y.toFloat()
-          gameManager.handleSpell(x, y, it.currentSpell)
+          gameManager.handleSpell(x, y, spell)
         }
       }
     }
@@ -57,10 +60,17 @@ class Game(
       padBottom(15f)
       progressBar {
         value = 1f
-      }.cell(row = true, growX = true)
+        ktxAsync {
+          while (value >= 0.5f) {
+            skipFrame()
+            value -= 0.011f
+          }
+        }
+      }.cell(row = true, growX = true, pad = 15f)
       table {
-        for (spellId in 0..3) {
+        for (spellId in arrayOf('Q', 'W', 'E', 'R', 'T')) {
           val icon = SpellIcon()
+          println(icon.currentSpell)
           add(icon.actor).pad(5f)
           spells.add(icon)
         }

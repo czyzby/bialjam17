@@ -6,35 +6,22 @@ filter: MipMapLinearNearest,MipMapLinearNearest
 repeat: none
 background
   rotate: false
-  xy: 4, 350
+  xy: 4, 298
   size: 544, 544
   orig: 544, 544
   offset: 0, 0
   index: -1
-bar_left
+bar
   rotate: false
-  xy: 4, 4
-  size: 9, 18
-  orig: 9, 18
-  offset: 0, 0
-  index: -1
-bar_middle
-  rotate: false
-  xy: 257, 286
-  size: 1, 18
-  orig: 1, 18
-  offset: 0, 0
-  index: -1
-bar_right
-  rotate: false
-  xy: 72, 72
-  size: 9, 18
-  orig: 9, 18
+  xy: 185, 208
+  size: 17, 18
+  split: 8, 8, 8, 8
+  orig: 17, 18
   offset: 0, 0
   index: -1
 beige
   rotate: false
-  xy: 552, 792
+  xy: 4, 4
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -42,38 +29,52 @@ beige
   index: -1
 brown
   rotate: false
-  xy: 257, 308
+  xy: 655, 804
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
   offset: 0, 0
   index: -1
+goblin
+  rotate: false
+  xy: 552, 670
+  size: 99, 172
+  orig: 200, 200
+  offset: 51, 8
+  index: -1
 gray
   rotate: false
-  xy: 620, 860
+  xy: 122, 64
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
   offset: 0, 0
   index: -1
+shadow
+  rotate: false
+  xy: 4, 42
+  size: 114, 56
+  orig: 200, 200
+  offset: 80, 5
+  index: -1
 spell0
   rotate: false
-  xy: 552, 830
+  xy: 185, 230
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 spell1
   rotate: false
-  xy: 4, 26
-  size: 64, 64
+  xy: 552, 602
+  size: 62, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 witch
   rotate: false
-  xy: 4, 94
-  size: 249, 252
-  orig: 256, 256
-  offset: 2, 2
+  xy: 4, 102
+  size: 177, 192
+  orig: 200, 200
+  offset: 0, 5
   index: -1

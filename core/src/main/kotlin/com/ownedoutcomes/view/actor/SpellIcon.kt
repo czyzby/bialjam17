@@ -5,8 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.ownedoutcomes.view.logic.Spell
-import com.ownedoutcomes.view.logic.Spell.Companion
-import com.ownedoutcomes.view.logic.randomSpellId
 import ktx.actors.alpha
 import ktx.actors.plus
 import ktx.actors.then
@@ -38,8 +36,8 @@ class SpellIcon(
         label.alpha = 1f
         label + (
             Actions.alpha(0.7f, 1f)
-                then Actions.moveBy(0f, 10f, 0.1f, Interpolation.bounceOut)
-                then Actions.moveBy(0f, -10f, 0.1f, Interpolation.bounceIn))
+                then Actions.moveBy(0f, 15f, 0.2f, Interpolation.fade)
+                then Actions.moveBy(0f, -15f, 0.2f, Interpolation.fade))
         delay(1f)
       }
       label.setText("")
@@ -50,7 +48,7 @@ class SpellIcon(
   }
 
   private fun randomizeSpell() {
-    currentSpell = Companion.getRandomSpell()
+    currentSpell = Spell.getRandomSpell()
     icon.setDrawable(Scene2DSkin.defaultSkin, "spell${currentSpell.ordinal}")
   }
 

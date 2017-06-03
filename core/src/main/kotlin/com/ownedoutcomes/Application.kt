@@ -61,8 +61,7 @@ class Application : KtxGame<Screen>() {
       font = skin.getFont("decorative")
     }
     progressBar("default-horizontal") {
-      knobBefore = skin.getDrawable("bar_middle")
-      knob = skin.getDrawable("bar_right")
+      knobBefore = skin.getDrawable("bar")
     }
   }
 

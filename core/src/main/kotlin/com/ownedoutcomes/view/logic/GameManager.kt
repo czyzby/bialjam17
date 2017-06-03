@@ -1,5 +1,7 @@
 package com.ownedoutcomes.view.logic
 
+import box2dLight.PointLight
+import box2dLight.RayHandler
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -9,10 +11,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.ownedoutcomes.view.logic.entity.Enemy
 import com.ownedoutcomes.view.logic.entity.Entity
 import com.ownedoutcomes.view.logic.entity.Player
+import ktx.app.color
 import ktx.app.use
 import ktx.box2d.createWorld
 import ktx.collections.gdxArrayOf
-import ktx.collections.gdxSetOf
+import ktx.collections.iterate
 import ktx.math.vec3
 
 class GameManager(
@@ -23,23 +26,32 @@ class GameManager(
   val world = createWorld()
   val temp = vec3()
   val player = Player(world)
-  val enemies = gdxSetOf<Enemy>()
   val entities = gdxArrayOf<Entity>()
   var timeToEnemySpawn = 0f
-
   val cameraMovementSpeed = 3.5f
   val backgroundSize = 512 / 32
   val backgroundRenderSize = 544f / 32f
   val spawningOffset = 20f
-  val contactManager = ContactManager().apply {
-    world.setContactListener(this)
+  val lightSystem = RayHandler(world).apply {
+    setAmbientLight(0f, 0f, 0f, 0.7f)
+    setBlur(true)
+  }
+  val light = PointLight(lightSystem, 120, color(1f, 1f, 1f, 0.6f), 20f, 0f, 0f).apply {
+    isSoft = true
+    setContactFilter(lightCategory, 0, lightMask)
+  }
+
+  init {
+    entities.add(player)
+    ContactManager().apply {
+      world.setContactListener(this)
+    }
   }
 
   fun update(delta: Float) {
     spawnEnemies(delta)
-    enemies.forEach { it.update(delta) }
-    player.update(delta)
-    entities.add(player)
+    entities.forEach { it.update(delta) }
+    light.position = player.position
     updateCamera(delta)
     world.step(delta, 8, 3)
   }
@@ -58,7 +70,7 @@ class GameManager(
           x = playerPos.x + x,
           y = playerPos.y + y,
           player = player)
-      enemies.add(enemy)
+      entities.add(enemy)
       timeToEnemySpawn = MathUtils.random(0.5f, 1.5f)
     }
   }
@@ -71,9 +83,17 @@ class GameManager(
       it.projectionMatrix = camera.combined
       renderBackground(it)
       entities.sort()
-      entities.forEach { it.render(batch) }
+      entities.iterate { entity, iterator ->
+        entity.render(batch)
+        if (entity.dead) {
+          iterator.remove()
+          entity.destroy()
+        }
+      }
     }
-    debugRenderer.render(world, camera.combined)
+    lightSystem.setCombinedMatrix(camera)
+    lightSystem.updateAndRender()
+    // TODO debugRenderer.render(world, camera.combined)
   }
 
   private fun renderBackground(it: Batch) {
@@ -135,6 +155,7 @@ class GameManager(
   fun handleSpell(x: Float, y: Float, spell: Spell) {
     unproject(x, y)
     println("$spell at $x, $y, projected to ${temp.x}, ${temp.y}")
+    spell.use(this, temp.x, temp.y)
     player.hop()
   }
 

@@ -12,14 +12,15 @@ import ktx.scene2d.Scene2DSkin
 
 interface Entity : Comparable<Entity> {
   val body: Body
+  val dead: Boolean
   var destination: Vector2?
   val entityType: EntityType
   val position: Vector2
     get() = body.position
 
   fun update(delta: Float)
-
   fun render(batch: Batch)
+  fun destroy()
 
   fun goTo(x: Float, y: Float) {
     val currentDestination = destination
@@ -38,13 +39,16 @@ abstract class AbstractEntity(
   override var destination: Vector2? = null
   private val fixture = body.fixtureList[0]
   open val speed: Float = 500f
+  override var dead: Boolean = false
+    protected set
 
   val sprite = Scene2DSkin.defaultSkin.atlas.createSprite(spriteName)
   private var rotatingLeft = true
   private val rotationSpeed = 50f
   private val rotationAngle = 10f
   private val initialOffsetY = -1f
-  private var offsetY = initialOffsetY
+  protected open var offsetX = -3f
+  protected open var offsetY = initialOffsetY
   private var jumping = false
   private val jumpingSpeed = 9f
   private val jumpingHeight = 0.25f
@@ -52,6 +56,7 @@ abstract class AbstractEntity(
   init {
     @Suppress("LeakingThis")
     body.userData = this
+    body.fixtureList.forEach { it.userData = entityType }
   }
 
   override fun update(delta: Float) {
@@ -59,7 +64,7 @@ abstract class AbstractEntity(
     updateMovement(delta)
   }
 
-  private fun animateSprite(delta: Float) {
+  protected fun animateSprite(delta: Float) {
     destination?.let {
       val targetX = body.position.x - it.x
       sprite.setFlip(targetX > 0f, false)
@@ -85,7 +90,7 @@ abstract class AbstractEntity(
     }
   }
 
-  private fun updateMovement(delta: Float) {
+  protected fun updateMovement(delta: Float) {
     destination?.let {
       val position = body.position
       if (fixture.testPoint(it)) {
@@ -103,20 +108,30 @@ abstract class AbstractEntity(
     jumping = true
   }
 
+  protected fun setSpriteSize(width: Float, height: Float) {
+    sprite.setSize(width, height)
+  }
+
   override fun compareTo(other: Entity): Int {
     val (x, y) = position
     val (otherX, otherY) = other.position
     return when {
-      y > otherY -> 1
-      y < otherY -> -1
-      x > otherX -> 1
-      x < otherX -> -1
+      y > otherY -> -1
+      y < otherY -> 1
+      x > otherX -> -1
+      x < otherX -> 1
       else -> 0
     }
   }
 
   override fun render(batch: Batch) {
-    sprite.setPosition(position.x - 3f, position.y + offsetY)
+    val renderX = position.x + offsetX
+    val renderY = position.y + offsetY
+    sprite.setPosition(renderX, renderY)
     sprite.draw(batch)
+  }
+
+  override fun destroy() {
+    body.world.destroyBody(body)
   }
 }
