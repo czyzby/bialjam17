@@ -1,9 +1,9 @@
 {
- duplicatePadding: false,
- paddingX: 1,
- paddingY: 1,
- stripWhitespaceX: true,
- stripWhitespaceY: true,
- filterMin: Linear,
- filterMag: Linear
+  "duplicatePadding": false,
+  "paddingX": 4,
+  "paddingY": 4,
+  "stripWhitespaceX": true,
+  "stripWhitespaceY": true,
+  "filterMin": "MipMapLinearNearest",
+  "filterMag": "MipMapLinearNearest"
 }

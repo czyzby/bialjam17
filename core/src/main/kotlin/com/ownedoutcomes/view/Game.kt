@@ -1,74 +1,89 @@
 package com.ownedoutcomes.view
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.Input.Keys
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.Align
-import com.ownedoutcomes.stageHeight
-import com.ownedoutcomes.stageWidth
-import com.ownedoutcomes.view.actor.group
-import ktx.actors.onClick
+import com.ownedoutcomes.view.actor.SpellIcon
+import com.ownedoutcomes.view.logic.GameManager
+import ktx.actors.onKeyDown
+import ktx.actors.setKeyboardFocus
+import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
-import ktx.scene2d.*
+import ktx.collections.gdxArrayOf
+import ktx.scene2d.Scene2DSkin
+import ktx.scene2d.progressBar
+import ktx.scene2d.table
+import ktx.style.get
 
 class Game(
-    val stage: Stage
+    val stage: Stage,
+    val batch: Batch
 ) : KtxScreen {
-  val spritesView = group {
+  val spells = gdxArrayOf<SpellIcon>()
+  var gameManager = GameManager(batch, Scene2DSkin.defaultSkin["background"])
+  val inputProcessor = object : KtxInputAdapter {
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+      gameManager.handleClick(screenX.toFloat(), screenY.toFloat())
+      return false
+    }
+  }
+  val inputListener = Actor().apply {
+    onKeyDown { _, _, keyCode ->
+      val spell = when (keyCode) {
+        Keys.Q -> spells[0]
+        Keys.W -> spells[1]
+        Keys.E -> spells[2]
+        Keys.R -> spells[3]
+        else -> null
+      }
+      spell?.let {
+        if (it.useSpell()) {
+          val x = Gdx.input.x.toFloat()
+          val y = Gdx.input.y.toFloat()
+          gameManager.handleSpell(x, y, it.currentSpell)
+        }
+      }
+    }
   }
   val view = table {
     setFillParent(true)
-    align(Align.bottomLeft)
-    // Game:
-    table {
-      val tilesY = (stageHeight.toInt() / 50)
-      val tilesX = (stageWidth.toInt() / 50)
-      for (y in 0..tilesY - 1) {
-        for (x in 0..tilesX - 1) {
-          val dirtStart = 2
-          val dirtEnd = 7
-          image(when {
-            x == dirtStart && y == dirtStart -> "grass_nw"
-            x == dirtEnd && y == dirtStart -> "grass_ne"
-            x in dirtStart..dirtEnd && y == dirtStart -> "grass_n"
-            x == dirtStart && y == dirtEnd -> "grass_sw"
-            x == dirtEnd && y == dirtEnd -> "grass_se"
-            x in dirtStart..dirtEnd && y == dirtEnd -> "grass_s"
-            x == dirtStart && y in dirtStart..dirtEnd -> "grass_w"
-            x == dirtEnd && y in dirtStart..dirtEnd -> "grass_e"
-            x in dirtStart..dirtEnd && y in dirtStart..dirtEnd -> "dirt"
-            else -> "grass"
-          }).cell(height = 50f, width = 50f)
-        }
-        row()
-      }
-    }.cell(width = stageWidth, height = stageHeight, padBottom = -110f, row = true)
+    align(Align.bottom)
 
-    // GUI:
-    buttonGroup(minCheckedCount = 0, maxCheckedCount = 1) {
-      background("brown")
-      repeat(5) { index ->
-        imageButton(style = "tower$index") {
-          it.height(60f).width(70f)
-              .padBottom(5f).padTop(5f).padLeft(10f).padRight(10f)
+    table {
+      padBottom(15f)
+      progressBar {
+        value = 1f
+      }.cell(row = true, growX = true)
+      table {
+        for (spellId in 0..3) {
+          val icon = SpellIcon()
+          add(icon.actor).pad(5f)
+          spells.add(icon)
         }
       }
-    }.cell(growX = true, height = 90f, pad = 10f)
+    }
     pack()
   }
 
   override fun show() {
-    reset()
     stage.addActor(view)
-    stage.addActor(spritesView)
-    Gdx.input.inputProcessor = stage
+    stage.addActor(inputListener)
+    inputListener.setKeyboardFocus()
+    Gdx.input.inputProcessor = InputMultiplexer(inputProcessor, stage)
   }
 
   override fun render(delta: Float) {
+    gameManager.update(delta)
+    gameManager.render()
     stage.act(delta)
     stage.draw()
   }
 
-  fun reset() {}
+  override fun hide() {
+    spells.forEach(SpellIcon::reset)
+  }
 }

@@ -1,12 +1,40 @@
 
 skin.png
-size: 1024,128
+size: 1024,1024
 format: RGBA8888
-filter: Linear,Linear
+filter: MipMapLinearNearest,MipMapLinearNearest
 repeat: none
+background
+  rotate: false
+  xy: 4, 350
+  size: 544, 544
+  orig: 544, 544
+  offset: 0, 0
+  index: -1
+bar_left
+  rotate: false
+  xy: 4, 4
+  size: 9, 18
+  orig: 9, 18
+  offset: 0, 0
+  index: -1
+bar_middle
+  rotate: false
+  xy: 257, 286
+  size: 1, 18
+  orig: 1, 18
+  offset: 0, 0
+  index: -1
+bar_right
+  rotate: false
+  xy: 72, 72
+  size: 9, 18
+  orig: 9, 18
+  offset: 0, 0
+  index: -1
 beige
   rotate: false
-  xy: 689, 87
+  xy: 552, 792
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -14,129 +42,38 @@ beige
   index: -1
 brown
   rotate: false
-  xy: 62, 18
+  xy: 257, 308
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
   offset: 0, 0
   index: -1
-chicken
-  rotate: false
-  xy: 651, 72
-  size: 37, 49
-  orig: 50, 50
-  offset: 7, 0
-  index: -1
-dirt
-  rotate: false
-  xy: 1, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass
-  rotate: false
-  xy: 66, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_e
-  rotate: false
-  xy: 131, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_n
-  rotate: false
-  xy: 196, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_ne
-  rotate: false
-  xy: 261, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_nw
-  rotate: false
-  xy: 326, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_s
-  rotate: false
-  xy: 391, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_se
-  rotate: false
-  xy: 456, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_sw
-  rotate: false
-  xy: 521, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-grass_w
-  rotate: false
-  xy: 586, 57
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
 gray
   rotate: false
-  xy: 89, 22
+  xy: 620, 860
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
   offset: 0, 0
   index: -1
-tower0
+spell0
   rotate: false
-  xy: 1, 1
-  size: 60, 55
-  orig: 60, 60
-  offset: 0, 4
+  xy: 552, 830
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
   index: -1
-tower1
+spell1
   rotate: false
-  xy: 1, 1
-  size: 60, 55
-  orig: 60, 60
-  offset: 0, 4
+  xy: 4, 26
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
   index: -1
-tower2
+witch
   rotate: false
-  xy: 1, 1
-  size: 60, 55
-  orig: 60, 60
-  offset: 0, 4
-  index: -1
-tower3
-  rotate: false
-  xy: 1, 1
-  size: 60, 55
-  orig: 60, 60
-  offset: 0, 4
-  index: -1
-tower4
-  rotate: false
-  xy: 1, 1
-  size: 60, 55
-  orig: 60, 60
-  offset: 0, 4
+  xy: 4, 94
+  size: 249, 252
+  orig: 256, 256
+  offset: 2, 2
   index: -1
