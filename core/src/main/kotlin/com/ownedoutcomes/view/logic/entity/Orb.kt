@@ -1,17 +1,22 @@
 package com.ownedoutcomes.view.logic.entity
 
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.ownedoutcomes.view.logic.EntityType.ORB
 import com.ownedoutcomes.view.logic.projectileCategory
 import com.ownedoutcomes.view.logic.projectileMask
+import ktx.actors.then
 import ktx.box2d.body
 import ktx.box2d.filter
 import ktx.box2d.ropeJointWith
 import ktx.math.component1
 import ktx.math.component2
+import ktx.scene2d.Scene2DSkin
 
 class Orb(
     world: World,
@@ -35,18 +40,23 @@ class Orb(
   override var speed: Float = 10f
   override var offsetX: Float = -1.25f
   override var offsetY: Float = -1.25f
+  val image = Image(Scene2DSkin.defaultSkin, "spell1")
 
   init {
-    setSpriteSize(2.5f, 2.5f)
+    image.setSize(2.5f, 2.5f)
+    image.setScale(0f)
+    image.addAction(Actions.scaleTo(1f, 1f, 1f, Interpolation.bounceOut)
+        then Actions.delay(lifetime - 2f)
+        then Actions.scaleTo(0f, 0f, 1f, Interpolation.bounceIn))
     body.ropeJointWith(player.body) {
       maxLength = 4f
     }
   }
 
   override fun update(delta: Float) {
+    image.act(delta)
     lifetime -= delta
     if (lifetime <= 0f) {
-      // TODO spawn particle
       dead = true
     }
     move(delta)
@@ -66,7 +76,9 @@ class Orb(
   }
 
   override fun render(batch: Batch) {
-    println(position)
-    super.render(batch)
+    val renderX = position.x + offsetX
+    val renderY = position.y + offsetY
+    image.setPosition(renderX, renderY)
+    image.draw(batch, 1f)
   }
 }

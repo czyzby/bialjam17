@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.ownedoutcomes.view.logic.entity.Enemy
 import com.ownedoutcomes.view.logic.entity.Entity
 import com.ownedoutcomes.view.logic.entity.Player
@@ -17,10 +18,12 @@ import ktx.box2d.createWorld
 import ktx.collections.gdxArrayOf
 import ktx.collections.iterate
 import ktx.math.vec3
+import ktx.scene2d.Scene2DSkin
 
 class GameManager(
     val batch: Batch,
-    val background: TextureRegion) {
+    val background: TextureRegion,
+    val skin: Skin = Scene2DSkin.defaultSkin) {
   val camera = OrthographicCamera(32f, 32f)
   val debugRenderer = Box2DDebugRenderer()
   val world = createWorld()
@@ -32,12 +35,15 @@ class GameManager(
   val backgroundSize = 512 / 32
   val backgroundRenderSize = 544f / 32f
   val spawningOffset = 20f
+  val destinationCursor = skin.atlas.createSprite("destination").apply {
+    setSize(2f, 2f)
+  }
   val lightSystem = RayHandler(world).apply {
     setAmbientLight(0f, 0f, 0f, 0.7f)
     setBlur(true)
   }
-  val light = PointLight(lightSystem, 120, color(1f, 1f, 1f, 0.6f), 20f, 0f, 0f).apply {
-    isSoft = true
+  val light = PointLight(lightSystem, 100, color(1f, 1f, 1f, 0.6f), 20f, 0f, 0f).apply {
+    isSoft = false
     setContactFilter(lightCategory, 0, lightMask)
   }
 
@@ -82,6 +88,10 @@ class GameManager(
       it.color = Color.WHITE
       it.projectionMatrix = camera.combined
       renderBackground(it)
+      player.destination?.let { position ->
+        destinationCursor.setPosition(position.x - 1f, position.y - 1f)
+        destinationCursor.draw(it)
+      }
       entities.sort()
       entities.iterate { entity, iterator ->
         entity.render(batch)

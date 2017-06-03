@@ -1,7 +1,9 @@
 package com.ownedoutcomes.view.logic.entity
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
+import com.ownedoutcomes.enemiesAmount
 import com.ownedoutcomes.view.logic.EntityType
 import com.ownedoutcomes.view.logic.enemyCategory
 import com.ownedoutcomes.view.logic.enemyMask
@@ -25,7 +27,7 @@ class Enemy(
           maskBits = enemyMask
         }
       }
-    }, entityType = EntityType.ENEMY, spriteName = "goblin") {
+    }, entityType = EntityType.ENEMY, spriteName = "goblin${MathUtils.random(enemiesAmount - 1)}") {
   override val speed: Float = 12000f
 
   init {

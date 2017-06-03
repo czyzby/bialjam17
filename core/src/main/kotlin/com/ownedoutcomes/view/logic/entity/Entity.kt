@@ -4,7 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.physics.box2d.Fixture
+import com.badlogic.gdx.physics.box2d.RayCastCallback
 import com.ownedoutcomes.view.logic.EntityType
+import ktx.collections.gdxIdentityMapOf
+import ktx.collections.gdxSetOf
 import ktx.math.component1
 import ktx.math.component2
 import ktx.math.vec2
@@ -12,7 +16,7 @@ import ktx.scene2d.Scene2DSkin
 
 interface Entity : Comparable<Entity> {
   val body: Body
-  val dead: Boolean
+  var dead: Boolean
   var destination: Vector2?
   val entityType: EntityType
   val position: Vector2
@@ -30,6 +34,18 @@ interface Entity : Comparable<Entity> {
       destination = vec2(x, y)
     }
   }
+
+  override fun compareTo(other: Entity): Int {
+    val (x, y) = position
+    val (otherX, otherY) = other.position
+    return when {
+      y > otherY -> -1
+      y < otherY -> 1
+      x > otherX -> -1
+      x < otherX -> 1
+      else -> 0
+    }
+  }
 }
 
 abstract class AbstractEntity(
@@ -40,7 +56,6 @@ abstract class AbstractEntity(
   private val fixture = body.fixtureList[0]
   open val speed: Float = 500f
   override var dead: Boolean = false
-    protected set
 
   val sprite = Scene2DSkin.defaultSkin.atlas.createSprite(spriteName)
   private var rotatingLeft = true
@@ -112,18 +127,6 @@ abstract class AbstractEntity(
     sprite.setSize(width, height)
   }
 
-  override fun compareTo(other: Entity): Int {
-    val (x, y) = position
-    val (otherX, otherY) = other.position
-    return when {
-      y > otherY -> -1
-      y < otherY -> 1
-      x > otherX -> -1
-      x < otherX -> 1
-      else -> 0
-    }
-  }
-
   override fun render(batch: Batch) {
     val renderX = position.x + offsetX
     val renderY = position.y + offsetY
@@ -133,5 +136,27 @@ abstract class AbstractEntity(
 
   override fun destroy() {
     body.world.destroyBody(body)
+  }
+
+  inline fun explode(rays: Int = 18, radius: Float = 2f, crossinline consequence: (Enemy) -> Unit) {
+    val alreadyApplied = gdxSetOf<Enemy>()
+    val listener = RayCastCallback { fixture, _, _, _ ->
+      if (fixture.userData === EntityType.ENEMY) {
+        val enemy = fixture.body.userData as Enemy
+        if (!alreadyApplied.contains(enemy)) {
+          alreadyApplied.add(enemy)
+          consequence(enemy)
+        }
+      }
+      1f // continue
+    }
+    val start = body.position
+    val end = vec2()
+    for (ray in 0..rays - 1) {
+      val angle = (360f / rays) * ray * MathUtils.degreesToRadians
+      end.x = start.x + MathUtils.cos(angle) * radius
+      end.y = start.y + MathUtils.sin(angle) * radius
+      body.world.rayCast(listener, start, end)
+    }
   }
 }

@@ -6,10 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.ownedoutcomes.view.logic.EntityType.*
-import com.ownedoutcomes.view.logic.entity.Enemy
-import com.ownedoutcomes.view.logic.entity.Entity
-import com.ownedoutcomes.view.logic.entity.Orb
-import com.ownedoutcomes.view.logic.entity.Player
+import com.ownedoutcomes.view.logic.entity.*
 import ktx.math.component1
 import ktx.math.component2
 
@@ -31,6 +28,7 @@ class ContactManager : ContactListener {
     when {
       typeA == PLAYER && typeB == ENEMY -> attackPlayer(entityA as Player, entityB as Enemy)
       typeA == ORB && typeB == ENEMY -> pushEnemy(entityA as Orb, entityB as Enemy)
+      typeA == DESTRUCTIBLE && typeB == ENEMY -> entityA.dead = true
     }
   }
 

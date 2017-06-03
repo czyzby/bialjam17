@@ -70,7 +70,6 @@ class Game(
       table {
         for (spellId in arrayOf('Q', 'W', 'E', 'R', 'T')) {
           val icon = SpellIcon()
-          println(icon.currentSpell)
           add(icon.actor).pad(5f)
           spells.add(icon)
         }
