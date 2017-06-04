@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.view.logic.EntityType.FIREBALL
+import com.ownedoutcomes.view.logic.EntityType.THUNDER
 import com.ownedoutcomes.view.logic.GameManager
 import com.ownedoutcomes.view.logic.angleTo
 import com.ownedoutcomes.view.logic.entity.particle.FireballExplosion
@@ -15,11 +16,11 @@ import ktx.box2d.filter
 import ktx.math.component1
 import ktx.math.component2
 
-class Fireball(
-    val gameManager: GameManager,
+class Thunder(
     world: World,
     x: Float,
-    y: Float) : AbstractEntity(world.body {
+    y: Float,
+    val damage: Int) : AbstractEntity(world.body {
   type = DynamicBody
   linearDamping = 1f
   bullet = true
@@ -32,17 +33,10 @@ class Fireball(
       maskBits = projectileMask
     }
   }
-}, entityType = FIREBALL, spriteName = "spell0") {
-  val pushback = 22000f
-  val damage = 2
-  var lifetime = 1f
-  override var speed: Float = 8f
-  override var offsetX: Float = -1f
-  override var offsetY: Float = -1f
-
-  init {
-    setSpriteSize(2f, 2f)
-  }
+}, entityType = THUNDER, spriteName = "black-alpha") {
+  val pushback = 15000f
+  var lifetime = 0.3f
+  override var speed: Float = 40f
 
   override fun update(delta: Float) {
     lifetime -= delta
@@ -51,10 +45,7 @@ class Fireball(
     }
   }
 
-  override fun destroy() {
-    explode(radius = 4f, rays = 36) { damage(it) }
-    gameManager.entities.add(FireballExplosion(body, Vector2(position)))
-    super.destroy()
+  override fun render(batch: Batch) {
   }
 
   fun damage(enemy: Enemy) {

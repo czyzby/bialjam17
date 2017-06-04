@@ -19,19 +19,22 @@ class HealExplosion(
   override val entityType: EntityType = PARTICLE
   override var dead = false
   val skin = Scene2DSkin.defaultSkin
-  val image: Image = Image(skin, "spell2").apply {
-    setSize(2.5f, 2.5f)
-    setOrigin(width / 2f, height / 2f)
-    position.y += 1f
-    setPosition(position.x - width / 2f, position.y - width / 2f)
+  val image: Image = Image(skin, "wings").apply {
+    setSize(7f, 7f)
+    setOrigin(width / 2f, 0f)
+    position.y += 0.5f
+    setPosition(position.x, position.y)
     setScale(0f)
-    addAction(Actions.scaleTo(1f, 1f, 0.4f, Interpolation.bounceOut)
-        then Actions.delay(0.8f)
-        then Actions.scaleTo(0f, 0f, 0.4f, Interpolation.bounceIn)
+    addAction(Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingIn)
+        then Actions.delay(0.6f)
+        then Actions.scaleTo(0f, 0f, 0.4f, Interpolation.swingOut)
         then Actions.run { dead = true })
   }
 
   override fun update(delta: Float) {
+    position.set(body.position)
+    position.y += 0.5f
+    image.setPosition(position.x - image.width / 2f, position.y)
     image.act(delta)
   }
 

@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.ownedoutcomes.view.logic.entity.Boss
 import com.ownedoutcomes.view.logic.entity.Enemy
 import com.ownedoutcomes.view.logic.entity.Entity
 import com.ownedoutcomes.view.logic.entity.Player
@@ -24,6 +27,7 @@ import ktx.scene2d.Scene2DSkin
 class GameManager(
     val batch: Batch,
     val background: TextureRegion,
+    val soundManager: SoundManager,
     skin: Skin = Scene2DSkin.defaultSkin,
     healthChangeCallback: (Int) -> Unit) {
   val camera = OrthographicCamera(32f, 32f)
@@ -32,7 +36,8 @@ class GameManager(
   val temp = vec3()
   val player = Player(world, healthChangeCallback)
   val entities = gdxArrayOf<Entity>()
-  var timeToEnemySpawn = 4f
+  var timeToEnemySpawn = 2.5f
+  var timeSinceBoss = 0f
   val cameraMovementSpeed = 3.5f
   val backgroundSize = 512 / 64
   val backgroundRenderSize = 544f / 64f
@@ -41,7 +46,7 @@ class GameManager(
     setSize(2f, 2f)
   }
   val lightSystem = RayHandler(world).apply {
-    setAmbientLight(0f, 0f, 0f, 0.7f)
+    setAmbientLight(0f, 0f, 0f, 0.6f)
     setBlur(true)
   }
   val light = PointLight(lightSystem, 100, color(1f, 1f, 1f, 0.6f), 20f, 0f, 0f).apply {
@@ -54,7 +59,7 @@ class GameManager(
 
   init {
     entities.add(player)
-    ContactManager().apply {
+    ContactManager(this, soundManager).apply {
       world.setContactListener(this)
     }
   }
@@ -69,6 +74,7 @@ class GameManager(
 
   private fun spawnEnemies(delta: Float) {
     timeToEnemySpawn -= delta
+    timeSinceBoss += delta
     if (timeToEnemySpawn <= 0f) {
       val (x, y) = when (MathUtils.random(1, 4)) {
         1 -> spawningOffset to randomSpawningPosition()
@@ -77,13 +83,27 @@ class GameManager(
         else -> randomSpawningPosition() to -spawningOffset
       }
       val playerPos = player.position
-      val enemy = Enemy(world,
-          x = playerPos.x + x,
-          y = playerPos.y + y,
-          gameManager = this)
+      val enemy = if (timeSinceBoss > 15f && MathUtils.randomBoolean()) {
+        timeSinceBoss = 0f
+        Boss(world,
+            x = playerPos.x + x,
+            y = playerPos.y + y,
+            gameManager = this)
+      } else {
+        Enemy(world,
+            x = playerPos.x + x,
+            y = playerPos.y + y,
+            gameManager = this)
+      }
       entities.add(enemy)
-      timeToEnemySpawn = MathUtils.random(2f, 3f)
+      timeToEnemySpawn = getTimeToSpawn()
+
     }
+  }
+
+  private fun getTimeToSpawn(): Float {
+    val bound = 2.5f - player.level * 0.5f
+    return MathUtils.random(bound - 0.5f, bound + 0.5f)
   }
 
   private fun randomSpawningPosition() = MathUtils.random(-spawningOffset, spawningOffset)
@@ -108,7 +128,7 @@ class GameManager(
     }
     lightSystem.setCombinedMatrix(camera)
     lightSystem.updateAndRender()
-    debugRenderer.render(world, camera.combined) // TODO remove
+    // debugRenderer.render(world, camera.combined) // TODO remove
   }
 
   private fun renderBackground(it: Batch) {
@@ -169,13 +189,13 @@ class GameManager(
 
   fun handleSpell(x: Float, y: Float, spell: Spell) {
     unproject(x, y)
-    println("$spell at $x, $y, projected to ${temp.x}, ${temp.y}")
     spell.use(this, temp.x, temp.y)
     player.hop()
   }
 
-  private fun unproject(x: Float, y: Float) {
+  fun unproject(x: Float, y: Float): Vector3 {
     temp.set(x, y, 0f)
     camera.unproject(temp)
+    return temp
   }
 }

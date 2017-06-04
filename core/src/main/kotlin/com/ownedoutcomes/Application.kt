@@ -1,5 +1,6 @@
 package com.ownedoutcomes
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -38,9 +39,17 @@ class Application : KtxGame<Screen>() {
       bindSingleton(Game(inject(), inject()))
     }
 
+    playMusic()
     addScreen(context.inject<Menu>())
     addScreen(context.inject<Game>())
     setScreen<Menu>()
+  }
+
+  private fun playMusic() {
+    Gdx.audio.newMusic("theme.ogg".toInternalFile()).apply {
+      volume = 0.3f
+      setOnCompletionListener { play() }
+    }.play()
   }
 
   fun createSkin(atlas: TextureAtlas): Skin = skin(atlas) { skin ->

@@ -7,8 +7,11 @@ import com.ownedoutcomes.initialHealthAmount
 import com.ownedoutcomes.view.logic.EntityType
 import com.ownedoutcomes.view.logic.playerCategory
 import com.ownedoutcomes.view.logic.playerMask
+import kotlinx.coroutines.experimental.Job
+import ktx.async.ktxAsync
 import ktx.box2d.body
 import ktx.box2d.filter
+import ktx.scene2d.Scene2DSkin
 
 class Player(
     world: World,
@@ -24,8 +27,20 @@ class Player(
           maskBits = playerMask
         }
       }
-    }, entityType = EntityType.PLAYER, spriteName = "witch") {
+    }, entityType = EntityType.PLAYER, spriteName = "witch0") {
   override val speed: Float = 24000f
+  var level = 0
+  var points: Int = 0
+    set(value) {
+      field = value
+      when (value) {
+        5 -> upgrade(1)
+        15 -> upgrade(2)
+        60 -> upgrade(3)
+      }
+    }
+  var job: Job? = null
+  var color = 1f
   var health = initialHealthAmount
     set(value) {
       val newValue = MathUtils.clamp(value, 0, initialHealthAmount)
@@ -34,13 +49,31 @@ class Player(
         healthChangeCallback(newValue)
       }
     }
+  val atlas = Scene2DSkin.defaultSkin.atlas
 
   init {
     setSpriteSize(6f, 6f)
     sprite.setOrigin(3f, 1.5f)
   }
 
+  private fun upgrade(nextLevel: Int) {
+    job?.cancel()
+    level = nextLevel
+    job = ktxAsync {
+      while (color > 0f) {
+        color = Math.max(0f, color - 0.05f)
+        skipFrame()
+      }
+      sprite.setRegion(atlas.findRegion("witch$nextLevel"))
+      while (color < 1f) {
+        color = Math.min(1f, color + 0.05f)
+        skipFrame()
+      }
+    }
+  }
+
   override fun update(delta: Float) {
     super.update(delta)
+    sprite.setColor(color, color, color, 1f)
   }
 }

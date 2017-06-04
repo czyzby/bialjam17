@@ -20,7 +20,7 @@ class FireballExplosion(
   override var dead = false
   val skin = Scene2DSkin.defaultSkin
   val image: Image = Image(skin, "explosion").apply {
-    setSize(10f, 10f)
+    setSize(12f, 12f)
     setOrigin(width / 2f, height / 2f)
     setPosition(position.x - width / 2f, position.y - width / 2f)
     setScale(0f)

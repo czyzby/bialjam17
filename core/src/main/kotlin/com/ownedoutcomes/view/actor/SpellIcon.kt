@@ -16,7 +16,8 @@ import ktx.scene2d.label
 import ktx.scene2d.table
 
 class SpellIcon(
-    var currentSpell: Spell = Spell.getRandomSpell()) {
+    val utility: Boolean,
+    var currentSpell: Spell = Spell.getRandomSpell(utility)) {
   private var used = false
   private lateinit var icon: Image
   private lateinit var label: Label
@@ -50,7 +51,7 @@ class SpellIcon(
   }
 
   private fun randomizeSpell() {
-    currentSpell = Spell.getRandomSpell()
+    currentSpell = Spell.getRandomSpell(utility)
     icon.setDrawable(Scene2DSkin.defaultSkin, "spell${currentSpell.ordinal}")
   }
 

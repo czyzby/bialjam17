@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.Touchable.enabled
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.ownedoutcomes.initialHealthAmount
 import com.ownedoutcomes.view.actor.SpellIcon
 import com.ownedoutcomes.view.logic.GameManager
+import com.ownedoutcomes.view.logic.SoundManager
 import ktx.actors.*
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
@@ -28,6 +30,7 @@ class Game(
     val stage: Stage,
     val batch: Batch
 ) : KtxScreen {
+  val soundManager = SoundManager()
   val spells = gdxArrayOf<SpellIcon>()
   val hearts = mutableListOf<Image>()
   var gameManager = createGameManager()
@@ -57,10 +60,10 @@ class Game(
       }
     }
   }
+  lateinit var pointsLabel: Label
   val view = table {
     setFillParent(true)
-    align(Align.bottom)
-
+    pointsLabel = label("0/5", style = "decorative").cell(expand = true, align = Align.top, row = true)
     table {
       padBottom(15f)
       table {
@@ -70,7 +73,7 @@ class Game(
       }.cell(row = true, growX = true)
       table {
         for (spellId in arrayOf('Q', 'W', 'E', 'R')) {
-          val icon = SpellIcon()
+          val icon = SpellIcon(utility = spellId == 'R')
           add(icon.actor).pad(5f)
           spells.add(icon)
         }
@@ -85,8 +88,9 @@ class Game(
       hide(Actions.run { this@Game.reset() } then Actions.fadeOut(0.4f))
     }
   }
+  var points = 0
 
-  private fun createGameManager() = GameManager(batch, Scene2DSkin.defaultSkin["background"]) {
+  private fun createGameManager() = GameManager(batch, Scene2DSkin.defaultSkin["background"], soundManager) {
     updateHeartsPanel(it)
   }
 
@@ -98,6 +102,8 @@ class Game(
   }
 
   fun reset() {
+    pointsLabel.txt = "0/5"
+    points = 0
     gameManager = createGameManager()
     hearts.forEach {
       it.clearActions()
@@ -110,8 +116,22 @@ class Game(
   override fun render(delta: Float) {
     gameManager.update(delta)
     gameManager.render()
+    updatePoints()
     stage.act(delta)
     stage.draw()
+  }
+
+  private fun updatePoints() {
+    val playerPoints = gameManager.player.points
+    if (points != playerPoints) {
+      points = playerPoints
+      pointsLabel.txt = "$points/" + when (points) {
+        in 0..4 -> "5"
+        in 5..14 -> "15"
+        in 15..59 -> "60"
+        else -> "MAX"
+      }
+    }
   }
 
   fun updateHeartsPanel(health: Int) {
