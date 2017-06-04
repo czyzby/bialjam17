@@ -89,10 +89,9 @@ class ContactManager(
   fun lead(boss: Boss, enemy: Enemy) {
     val (playerX, playerY) = gameManager.player.position
     val (enemyX, enemyY) = enemy.position
-    val angle = MathUtils.atan2(enemyY - playerY, enemyX - playerX)
+    val angle = MathUtils.atan2(playerY - enemyY, playerX - enemyX)
     val forceX = MathUtils.cos(angle)
     val forceY = MathUtils.sin(angle)
-    println("PUSH")
     enemy.body.applyForceToCenter(forceX * 5000f, forceY * 5000f, true)
   }
 

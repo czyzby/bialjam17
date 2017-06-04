@@ -5,7 +5,6 @@ import ktx.assets.toInternalFile
 import ktx.collections.toGdxArray
 
 class SoundManager {
-  val soundVolume = 0.8f
   val goblinHitSounds = (0..2)
       .map { Gdx.audio.newMusic("sound/goblin-damage$it.ogg".toInternalFile()) }
       .toGdxArray()
@@ -15,11 +14,12 @@ class SoundManager {
   val witchHitSounds = (0..1)
       .map { Gdx.audio.newMusic("sound/witch-damage$it.ogg".toInternalFile()) }
       .toGdxArray()
+  val fireballShoot = Gdx.audio.newSound("sound/fireball-shoot.ogg".toInternalFile())
+  val ice = Gdx.audio.newSound("sound/ice.ogg".toInternalFile())
 
   fun playGoblinHitSound() {
     goblinHitSounds.random().apply {
       if (!isPlaying) {
-        volume = soundVolume
         play()
       }
     }
@@ -28,7 +28,6 @@ class SoundManager {
   fun playGoblinAttackSound() {
     goblinAttackSounds.random().apply {
       if (!isPlaying) {
-        volume = soundVolume
         play()
       }
     }
@@ -37,7 +36,6 @@ class SoundManager {
   fun playWitchHitSound() {
     witchHitSounds.random().apply {
       if (!isPlaying) {
-        volume = soundVolume
         play()
       }
     }

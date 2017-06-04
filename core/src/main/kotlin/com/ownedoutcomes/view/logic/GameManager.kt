@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -38,6 +37,7 @@ class GameManager(
   val entities = gdxArrayOf<Entity>()
   var timeToEnemySpawn = 2.5f
   var timeSinceBoss = 0f
+  val bossSpawnTime = 22f
   val cameraMovementSpeed = 3.5f
   val backgroundSize = 512 / 64
   val backgroundRenderSize = 544f / 64f
@@ -83,7 +83,7 @@ class GameManager(
         else -> randomSpawningPosition() to -spawningOffset
       }
       val playerPos = player.position
-      val enemy = if (timeSinceBoss > 15f && MathUtils.randomBoolean()) {
+      val enemy = if (timeSinceBoss > bossSpawnTime && MathUtils.randomBoolean()) {
         timeSinceBoss = 0f
         Boss(world,
             x = playerPos.x + x,

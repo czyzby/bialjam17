@@ -33,6 +33,7 @@ enum class Spell {
     }
 
     private fun cast(gameManager: GameManager, x: Float, y: Float) {
+      gameManager.soundManager.fireballShoot.play()
       val (playerX, playerY) = gameManager.player.position
       val angle = MathUtils.atan2(y - playerY, x - playerX)
       val distanceX = MathUtils.cos(angle)
@@ -139,7 +140,7 @@ enum class Spell {
       cast(gameManager, x - playerX, y - playerY)
       val level = player.level
       repeat(2 + (level * 1.5f).toInt()) {
-        schedule((it + 1) * 0.3f) {
+        schedule((it + 1) * 0.5f) {
           if (player.health > 0) {
             cast(gameManager, x - playerX, y - playerY)
           }
