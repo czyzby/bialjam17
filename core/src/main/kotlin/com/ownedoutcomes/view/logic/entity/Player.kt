@@ -34,9 +34,9 @@ class Player(
     set(value) {
       field = value
       when (value) {
-        1 -> upgrade(1)
-        2 -> upgrade(2)
-        3 -> upgrade(3)
+        5 -> upgrade(1)
+        15 -> upgrade(2)
+        60 -> upgrade(3)
       }
     }
   var job: Job? = null
@@ -58,6 +58,7 @@ class Player(
 
   private fun upgrade(nextLevel: Int) {
     job?.cancel()
+    health++
     level = nextLevel
     job = ktxAsync {
       while (color > 0f) {
