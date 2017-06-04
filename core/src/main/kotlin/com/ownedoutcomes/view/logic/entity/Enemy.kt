@@ -3,32 +3,33 @@ package com.ownedoutcomes.view.logic.entity
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
 import com.ownedoutcomes.enemiesAmount
 import com.ownedoutcomes.view.logic.EntityType
+import com.ownedoutcomes.view.logic.GameManager
 import com.ownedoutcomes.view.logic.enemyCategory
 import com.ownedoutcomes.view.logic.enemyMask
+import com.ownedoutcomes.view.logic.entity.particle.DeadEnemy
 import ktx.box2d.body
 import ktx.box2d.filter
 import ktx.math.component1
 import ktx.math.component2
 
-// TODO Chyba zwolnij wrogow
 // TODO EXP, levele, upgrade spelli
 // TODO Przynajmniej ze 3-4 spelle
 // TODO portal nie leczy, inna ikona
 // TODO MUZYKA, dzwieki
-// TODO (maybe) podmiana backgrounda, main menu
-// TODO REPLAY
+// TODO (maybe) podmiana backgrounda
 // TODO Bonusy?
 
 class Enemy(
     world: World,
     x: Float,
     y: Float,
-    val heartSprite: Sprite,
-    val player: Player) : AbstractEntity(
+    val gameManager: GameManager,
+    val spriteName: String = "goblin${MathUtils.random(enemiesAmount - 1)}") : AbstractEntity(
     world.body {
       position.set(x, y)
       linearDamping = 10f
@@ -41,9 +42,11 @@ class Enemy(
           maskBits = enemyMask
         }
       }
-    }, entityType = EntityType.ENEMY, spriteName = "goblin${MathUtils.random(enemiesAmount - 1)}") {
-  override val speed: Float = 23500f
+    }, entityType = EntityType.ENEMY, spriteName = spriteName) {
+  override val speed: Float = 21000f
   var health = 3
+  val player = gameManager.player
+  val heartSprite = gameManager.heartSprite
 
   init {
     setSpriteSize(6f, 6f)
@@ -54,7 +57,7 @@ class Enemy(
     destination = player.position
     super.update(delta)
     if (health <= 0) {
-      // TODO don't immediately remove? add particle?
+      gameManager.entities.add(DeadEnemy(body, Vector2(position), spriteName, sprite.rotation, sprite.isFlipX))
       dead = true
     }
   }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.ownedoutcomes.view.logic.Spell
+import kotlinx.coroutines.experimental.Job
 import ktx.actors.alpha
 import ktx.actors.plus
 import ktx.actors.then
@@ -19,6 +20,7 @@ class SpellIcon(
   private var used = false
   private lateinit var icon: Image
   private lateinit var label: Label
+  var job: Job? = null
   val actor = table {
     icon = image("spell${currentSpell.ordinal}").cell(padBottom = -64f, row = true)
     label = label("", style = "decorative")
@@ -30,7 +32,7 @@ class SpellIcon(
     icon.alpha = 0.2f
     icon + Actions.fadeIn(10f, Interpolation.fade)
     randomizeSpell()
-    ktxAsync {
+    job = ktxAsync {
       for (time in 0..9) {
         label.setText((10 - time).toString())
         label.alpha = 1f
@@ -62,5 +64,6 @@ class SpellIcon(
     icon.alpha = 1f
 
     used = false
+    job?.cancel()
   }
 }

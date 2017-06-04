@@ -29,7 +29,14 @@ class ContactManager : ContactListener {
       typeA == PLAYER && typeB == ENEMY -> attackPlayer(entityA as Player, entityB as Enemy)
       typeA == ORB && typeB == ENEMY -> pushEnemy(entityA as Orb, entityB as Enemy)
       typeA == FIREBALL && typeB == ENEMY -> triggerFireball(entityA as Fireball, entityB as Enemy)
+      typeA == ICE && typeB == ENEMY -> repel(entityA as Ice, entityB as Enemy)
     }
+  }
+
+  fun repel(ice: Ice, enemy: Enemy) {
+    val (forceX, forceY) = ice.position angleTo enemy.position
+    enemy.body.applyForceToCenter(forceX * ice.pushback, forceY * ice.pushback, true)
+    enemy.health--
   }
 
   fun attackPlayer(player: Player, enemy: Enemy) {

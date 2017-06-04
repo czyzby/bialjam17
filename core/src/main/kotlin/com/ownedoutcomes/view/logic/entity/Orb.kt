@@ -22,7 +22,8 @@ class Orb(
     world: World,
     val player: Player,
     x: Float,
-    y: Float) : AbstractEntity(world.body {
+    y: Float,
+    length: Float) : AbstractEntity(world.body {
   type = DynamicBody
   linearDamping = 1f
   position.set(x, y)
@@ -49,7 +50,7 @@ class Orb(
         then Actions.delay(lifetime - 2f)
         then Actions.scaleTo(0f, 0f, 1f, Interpolation.bounceIn))
     body.ropeJointWith(player.body) {
-      maxLength = 5f
+      maxLength = length
     }
   }
 

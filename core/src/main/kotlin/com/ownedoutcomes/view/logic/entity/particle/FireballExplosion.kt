@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.ownedoutcomes.view.logic.EntityType
 import com.ownedoutcomes.view.logic.EntityType.PARTICLE
 import com.ownedoutcomes.view.logic.entity.Entity
-import kotlinx.coroutines.experimental.delay
 import ktx.actors.then
 import ktx.scene2d.Scene2DSkin
 

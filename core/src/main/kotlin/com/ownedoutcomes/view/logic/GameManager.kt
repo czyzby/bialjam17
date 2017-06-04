@@ -24,7 +24,7 @@ import ktx.scene2d.Scene2DSkin
 class GameManager(
     val batch: Batch,
     val background: TextureRegion,
-    val skin: Skin = Scene2DSkin.defaultSkin,
+    skin: Skin = Scene2DSkin.defaultSkin,
     healthChangeCallback: (Int) -> Unit) {
   val camera = OrthographicCamera(32f, 32f)
   val debugRenderer = Box2DDebugRenderer()
@@ -32,12 +32,12 @@ class GameManager(
   val temp = vec3()
   val player = Player(world, healthChangeCallback)
   val entities = gdxArrayOf<Entity>()
-  var timeToEnemySpawn = 0f
+  var timeToEnemySpawn = 4f
   val cameraMovementSpeed = 3.5f
-  val backgroundSize = 512 / 32
-  val backgroundRenderSize = 544f / 32f
+  val backgroundSize = 512 / 64
+  val backgroundRenderSize = 544f / 64f
   val spawningOffset = 24f
-  val destinationCursor = skin.atlas.createSprite("destination").apply {
+  val destinationCursor: Sprite = skin.atlas.createSprite("destination").apply {
     setSize(2f, 2f)
   }
   val lightSystem = RayHandler(world).apply {
@@ -80,8 +80,7 @@ class GameManager(
       val enemy = Enemy(world,
           x = playerPos.x + x,
           y = playerPos.y + y,
-          heartSprite = heartSprite,
-          player = player)
+          gameManager = this)
       entities.add(enemy)
       timeToEnemySpawn = MathUtils.random(2f, 3f)
     }
@@ -109,7 +108,7 @@ class GameManager(
     }
     lightSystem.setCombinedMatrix(camera)
     lightSystem.updateAndRender()
-    // TODO debugRenderer.render(world, camera.combined)
+    debugRenderer.render(world, camera.combined) // TODO remove
   }
 
   private fun renderBackground(it: Batch) {

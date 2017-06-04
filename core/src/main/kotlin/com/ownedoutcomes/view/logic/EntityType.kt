@@ -5,5 +5,6 @@ enum class EntityType {
   ENEMY,
   FIREBALL,
   ORB,
-  PARTICLE
+  PARTICLE,
+  ICE
 }

@@ -6,14 +6,14 @@ filter: MipMapLinearNearest,MipMapLinearNearest
 repeat: none
 background
   rotate: false
-  xy: 4, 466
+  xy: 4, 440
   size: 544, 544
   orig: 544, 544
   offset: 0, 0
   index: -1
 bar
   rotate: false
-  xy: 834, 866
+  xy: 1001, 966
   size: 17, 18
   split: 8, 8, 8, 8
   orig: 17, 18
@@ -21,15 +21,22 @@ bar
   index: -1
 beige
   rotate: false
-  xy: 668, 788
+  xy: 448, 206
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
   offset: 0, 0
   index: -1
+black-alpha
+  rotate: false
+  xy: 882, 801
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
 brown
   rotate: false
-  xy: 134, 228
+  xy: 271, 101
   size: 26, 38
   split: 10, 10, 17, 19
   orig: 26, 38
@@ -37,56 +44,56 @@ brown
   index: -1
 destination
   rotate: false
-  xy: 834, 888
+  xy: 148, 17
   size: 119, 122
   orig: 128, 128
   offset: 5, 4
   index: -1
 explosion
   rotate: false
-  xy: 304, 327
+  xy: 4, 4
   size: 140, 135
   orig: 200, 200
   offset: 30, 25
   index: -1
 goblin0
   rotate: false
-  xy: 552, 650
+  xy: 552, 425
   size: 112, 172
   orig: 200, 200
   offset: 44, 6
   index: -1
 goblin1
   rotate: false
-  xy: 552, 826
+  xy: 552, 601
   size: 162, 184
   orig: 200, 200
   offset: 29, 6
   index: -1
 goblin2
   rotate: false
-  xy: 718, 838
+  xy: 496, 249
   size: 112, 172
   orig: 200, 200
   offset: 44, 6
   index: -1
 goblin3
   rotate: false
-  xy: 4, 72
+  xy: 752, 790
   size: 126, 194
   orig: 200, 200
   offset: 43, 6
   index: -1
 goblin4
   rotate: false
-  xy: 185, 284
+  xy: 882, 806
   size: 115, 178
   orig: 200, 200
   offset: 44, 6
   index: -1
 gray
   rotate: false
-  xy: 304, 289
+  xy: 612, 258
   size: 27, 34
   split: 9, 10, 17, 15
   orig: 27, 34
@@ -94,35 +101,56 @@ gray
   index: -1
 heart
   rotate: false
-  xy: 552, 586
+  xy: 612, 296
   size: 61, 60
   orig: 64, 64
   offset: 1, 3
   index: -1
+ice
+  rotate: false
+  xy: 552, 789
+  size: 196, 195
+  orig: 200, 200
+  offset: 3, 0
+  index: -1
+loss
+  rotate: false
+  xy: 4, 143
+  size: 307, 293
+  orig: 313, 302
+  offset: 3, 4
+  index: -1
 spell0
   rotate: false
-  xy: 448, 401
+  xy: 612, 360
   size: 60, 61
   orig: 64, 64
   offset: 1, 2
   index: -1
 spell1
   rotate: false
-  xy: 4, 4
+  xy: 315, 176
   size: 62, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 spell2
   rotate: false
-  xy: 957, 951
+  xy: 668, 538
   size: 63, 59
   orig: 64, 64
   offset: 1, 2
   index: -1
+spell3
+  rotate: false
+  xy: 381, 177
+  size: 63, 63
+  orig: 64, 64
+  offset: 1, 0
+  index: -1
 witch
   rotate: false
-  xy: 4, 270
+  xy: 315, 244
   size: 177, 192
   orig: 200, 200
   offset: 0, 5

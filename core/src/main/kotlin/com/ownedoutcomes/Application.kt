@@ -19,10 +19,7 @@ import ktx.assets.toInternalFile
 import ktx.async.enableKtxCoroutines
 import ktx.inject.Context
 import ktx.scene2d.Scene2DSkin
-import ktx.style.defaultStyle
-import ktx.style.label
-import ktx.style.progressBar
-import ktx.style.skin
+import ktx.style.*
 
 class Application : KtxGame<Screen>() {
   val context = Context()
@@ -55,10 +52,19 @@ class Application : KtxGame<Screen>() {
           size = 50
         }))
     label {
-      font = skin.getFont(defaultStyle)
+      font = skin[defaultStyle]
     }
     label("decorative") {
-      font = skin.getFont("decorative")
+      font = skin["decorative"]
+    }
+    textButton("decorative") {
+      font = skin["decorative"]
+      overFontColor = Color.GRAY
+      downFontColor = Color.DARK_GRAY
+    }
+    window {
+      titleFont = skin[defaultStyle]
+      stageBackground = skin["black-alpha"]
     }
   }
 

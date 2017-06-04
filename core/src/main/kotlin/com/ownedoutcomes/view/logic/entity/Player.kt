@@ -1,7 +1,9 @@
 package com.ownedoutcomes.view.logic.entity
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
 import com.badlogic.gdx.physics.box2d.World
+import com.ownedoutcomes.initialHealthAmount
 import com.ownedoutcomes.view.logic.EntityType
 import com.ownedoutcomes.view.logic.playerCategory
 import com.ownedoutcomes.view.logic.playerMask
@@ -23,11 +25,14 @@ class Player(
         }
       }
     }, entityType = EntityType.PLAYER, spriteName = "witch") {
-  override val speed: Float = 25000f
-  var health = 10
+  override val speed: Float = 24000f
+  var health = initialHealthAmount
     set(value) {
-      field = value
-      healthChangeCallback(value)
+      val newValue = MathUtils.clamp(value, 0, initialHealthAmount)
+      if (field != 0 && field != newValue) {
+        field = newValue
+        healthChangeCallback(newValue)
+      }
     }
 
   init {
@@ -37,6 +42,5 @@ class Player(
 
   override fun update(delta: Float) {
     super.update(delta)
-    // TODO check if dead
   }
 }
