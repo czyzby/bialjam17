@@ -14,10 +14,9 @@ import com.ownedoutcomes.view.logic.enemyMask
 import com.ownedoutcomes.view.logic.entity.particle.DeadEnemy
 import ktx.box2d.body
 import ktx.box2d.filter
+import ktx.collections.gdxArrayOf
 import ktx.math.component1
 import ktx.math.component2
-
-// TODO MUZYKA, dzwieki
 
 open class Enemy(
     world: World,
@@ -84,12 +83,14 @@ open class Enemy(
   }
 }
 
+val viableBosses = gdxArrayOf(1, 4, 5)
+
 class Boss(
     world: World,
     x: Float,
     y: Float,
     gameManager: GameManager,
-    spriteName: String = "goblin${MathUtils.random(enemiesAmount - 1)}")
+    spriteName: String = "goblin${viableBosses.random()}")
   : Enemy(world, x, y, gameManager, spriteName, bodySize = 9f, initialHealth = 6) {
   override val speed: Float = 60000f
 

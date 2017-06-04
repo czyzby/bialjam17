@@ -34,9 +34,9 @@ class Player(
     set(value) {
       field = value
       when (value) {
-        5 -> upgrade(1)
-        15 -> upgrade(2)
-        60 -> upgrade(3)
+        1 -> upgrade(1)
+        2 -> upgrade(2)
+        3 -> upgrade(3)
       }
     }
   var job: Job? = null

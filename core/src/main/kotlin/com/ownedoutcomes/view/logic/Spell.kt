@@ -54,6 +54,7 @@ enum class Spell {
       val distanceY = MathUtils.sin(angle)
       addOrb(playerX, playerY, distanceX, distanceY, gameManager)
       val level = gameManager.player.level
+      gameManager.soundManager.orb.play()
       if (level > 0) addOrb(playerX, playerY, -distanceX, -distanceY, gameManager)
       if (level > 1) addOrb(playerX, playerY, distanceX, -distanceY, gameManager)
       if (level > 2) addOrb(playerX, playerY, -distanceX, distanceY, gameManager)
@@ -70,6 +71,7 @@ enum class Spell {
       val player = gameManager.player
       player.health += (1 + (gameManager.player.level + 1) / 2)
       gameManager.entities.add(HealExplosion(player.body, Vector2(player.position)))
+      gameManager.soundManager.heal.play()
     }
   },
   ICE {
@@ -83,6 +85,7 @@ enum class Spell {
       val damage = if (level < 2) 1 else 2
       val lifetime = 3f + level
       val ice = Ice(gameManager, gameManager.world, orbX, orbY, damage = damage, lifetime = lifetime)
+      gameManager.soundManager.ice.play()
       gameManager.entities.add(ice)
       ice.body.applyForceToCenter(distanceX * ice.speed, distanceY * ice.speed, true)
     }
@@ -94,6 +97,7 @@ enum class Spell {
       player.body.setTransform(x, y, player.body.angle)
       player.destination = null
       gameManager.entities.add(TeleportExplosion(player.body, Vector2(player.position)))
+      gameManager.soundManager.teleport.play()
       if (player.level > 1) {
         player.health++
       }
@@ -117,6 +121,7 @@ enum class Spell {
       val damage = (1 + (level + 1) / 2)
       val thunder = Thunder(gameManager.world, thunderX, thunderY, damage)
       gameManager.entities.add(thunder)
+      gameManager.soundManager.thunder.play()
       thunder.body.applyForceToCenter(distanceX * thunder.speed, distanceY * thunder.speed, true)
       gameManager.entities.add(ThunderExplosion(player.body, Vector2(player.position), angle))
       if (allowMultiple) {
@@ -160,6 +165,7 @@ enum class Spell {
       val waveY = playerY + distanceY * offset
       val wave = Wave(gameManager.world, waveX, waveY, angle)
       gameManager.entities.add(wave)
+      gameManager.soundManager.wave.play()
       wave.body.applyForceToCenter(distanceX * wave.speed, distanceY * wave.speed, true)
     }
   };

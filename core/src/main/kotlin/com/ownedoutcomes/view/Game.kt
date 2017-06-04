@@ -82,11 +82,15 @@ class Game(
     pack()
   }
   val lossDialog = dialog(title = "") {
-    image("loss")
-    touchable = enabled
-    onClick { _, _ ->
-      hide(Actions.run { this@Game.reset() } then Actions.fadeOut(0.4f))
+    image("loss") {
+      onClick { _, _ ->
+        this@dialog.hide(
+            Actions.run { this@Game.reset() }
+                then Actions.fadeOut(0.4f))
+      }
     }
+    touchable = enabled
+
   }
   var points = 0
 
@@ -108,7 +112,6 @@ class Game(
     hearts.forEach {
       it.clearActions()
       it.alpha = 5f
-      // TODO remove extra?
     }
     spells.forEach { it.reset() }
   }

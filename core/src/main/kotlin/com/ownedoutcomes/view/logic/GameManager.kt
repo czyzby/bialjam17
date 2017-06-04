@@ -30,13 +30,13 @@ class GameManager(
     skin: Skin = Scene2DSkin.defaultSkin,
     healthChangeCallback: (Int) -> Unit) {
   val camera = OrthographicCamera(32f, 32f)
-  val debugRenderer = Box2DDebugRenderer()
+  // val debugRenderer = Box2DDebugRenderer()
   val world = createWorld()
   val temp = vec3()
   val player = Player(world, healthChangeCallback)
   val entities = gdxArrayOf<Entity>()
-  var timeToEnemySpawn = 2.5f
-  var timeSinceBoss = 0f
+  var timeToEnemySpawn = 1.5f
+  var timeSinceBoss = 5f
   val bossSpawnTime = 22f
   val cameraMovementSpeed = 3.5f
   val backgroundSize = 512 / 64
@@ -128,7 +128,7 @@ class GameManager(
     }
     lightSystem.setCombinedMatrix(camera)
     lightSystem.updateAndRender()
-    // debugRenderer.render(world, camera.combined) // TODO remove
+    // debugRenderer.render(world, camera.combined)
   }
 
   private fun renderBackground(it: Batch) {

@@ -26,7 +26,7 @@ class HealExplosion(
     setPosition(position.x, position.y)
     setScale(0f)
     addAction(Actions.scaleTo(1f, 1f, 0.4f, Interpolation.swingIn)
-        then Actions.delay(0.6f)
+        then Actions.delay(1f)
         then Actions.scaleTo(0f, 0f, 0.4f, Interpolation.swingOut)
         then Actions.run { dead = true })
   }

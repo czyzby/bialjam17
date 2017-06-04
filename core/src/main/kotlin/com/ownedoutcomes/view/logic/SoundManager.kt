@@ -1,6 +1,7 @@
 package com.ownedoutcomes.view.logic
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import ktx.assets.toInternalFile
 import ktx.collections.toGdxArray
 
@@ -14,9 +15,16 @@ class SoundManager {
   val witchHitSounds = (0..1)
       .map { Gdx.audio.newMusic("sound/witch-damage$it.ogg".toInternalFile()) }
       .toGdxArray()
-  val fireballShoot = Gdx.audio.newSound("sound/fireball-shoot.ogg".toInternalFile())
-  val ice = Gdx.audio.newSound("sound/ice.ogg".toInternalFile())
+  val fireballShoot = sound("sound/fireball-shoot.ogg")
+  val ice = sound("sound/ice.ogg")
+  val heal = sound("sound/heal.ogg")
+  val wave = sound("sound/wave.ogg")
+  val teleport = sound("sound/teleport.ogg")
+  val fireball = sound("sound/fireball.ogg")
+  val thunder = sound("sound/thunder.ogg")
+  val orb = sound("sound/orb.ogg")
 
+  private fun sound(path: String): Sound = Gdx.audio.newSound(path.toInternalFile())
   fun playGoblinHitSound() {
     goblinHitSounds.random().apply {
       if (!isPlaying) {
