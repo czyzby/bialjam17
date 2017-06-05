@@ -11,9 +11,9 @@ some time to recharge!
 
 ## About
 
-Created in under 40 hours (minus sleep) on game jam organized by the *Bialystok University of Technology* by a single
-Java backend developer and a cute graphics designer. The jam's topic was *10 seconds* - hence the 10 seconds delay on
-spell usage.
+Created in under 40 hours (minus sleep) with [KTX](https://github.com/libktx/ktx) by a single Java backend developer and
+a cute graphics designer on a game jam organized by the *Bialystok University of Technology*. The jam's topic was
+*10 seconds* - hence the 10 seconds delay on spell usage.
 
 **We won!** Somehow.
 
@@ -26,8 +26,10 @@ designs were based on existing artworks.
 
 Initially, we planned on creating a tower defense game where you have 10 seconds to build the base and survive through
 a 10 seconds wave of chicken siege. It was only after 8 hours of the jam that we came up with this concept. The initial
-commits contain some code and assets from the previous project - it was continued by a part of our 4 person team
+commits contain some code and assets from the previous project - it was continued by half of our 4 person team
 [in this repository](https://github.com/czyzby/bialjam-17/).
+
+_The actual game looks better than the screen shots, make sure to [give it a try](https://github.com/czyzby/bialjam17/releases)._
 
 ## Assets
 
